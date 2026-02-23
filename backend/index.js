@@ -124,6 +124,11 @@ app.get('/', (req, res) => {
   res.send('Felicity EMS API is running');
 });
 
+// API Base route (to prevent 404 on /api)
+app.get('/api', (req, res) => {
+  res.json({ message: 'Welcome to Felicity EMS API' });
+});
+
 // Error Handling Middleware
 app.use(notFound);
 app.use(errorHandler);
