@@ -136,14 +136,14 @@ const EventDetails = () => {
       }
 
       let payload;
-      let isMultipart = false;
+      // let isMultipart = false;
 
       // Check if we need multipart/form-data (for payment proof OR custom file uploads)
       const hasCustomFiles = Object.values(formResponses).some(val => val instanceof File);
       const totalAmountToPay = (event.registrationFee || 0) + totalMerchCost;
 
       if (paymentProof || totalAmountToPay > 0 || hasCustomFiles) {
-          isMultipart = true;
+          // isMultipart = true;
           payload = new FormData();
           
           // Separate files from text responses for custom form

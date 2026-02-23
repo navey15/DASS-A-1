@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { userService } from '../../services';
-import { Calendar, CheckCircle, TrendingUp, Search, User, ArrowRight } from 'lucide-react';
+import { Calendar, CheckCircle, TrendingUp, Search, ArrowRight } from 'lucide-react';
 
 const ParticipantDashboard = () => {
   const { user } = useAuth();

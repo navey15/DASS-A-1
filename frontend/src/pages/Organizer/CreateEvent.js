@@ -52,7 +52,7 @@ const CreateEvent = () => {
          // Edit mode: fetch event details
          const fetchEvent = async () => {
              try {
-                const response = await organizerService.getEventAnalytics(id); 
+                await organizerService.getEventAnalytics(id); 
                 // Or eventService.getEventById(id), but organizer endpoint might give more data
                 // Since getEventAnalytics returns { event: ... }, let's try to map it
                 // Actually even better to use eventService.getEventById but ensure we have organizer access

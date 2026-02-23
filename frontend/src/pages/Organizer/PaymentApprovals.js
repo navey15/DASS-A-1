@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { organizerService } from "../../services";
-import { CheckCircle, XCircle, Clock, ExternalLink, ArrowLeft } from "lucide-react";
+import { CheckCircle, ExternalLink, ArrowLeft } from "lucide-react";
 
 const PaymentApprovals = () => {
   const { id } = useParams();
@@ -34,6 +34,7 @@ const PaymentApprovals = () => {
 
   useEffect(() => {
     fetchRegistrations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleUpdateStatus = async (regId, status) => {

@@ -33,6 +33,7 @@ const PasswordRequests = () => {
   // Fetch when tab changes
   useEffect(() => {
     fetchRequests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   const handleApprove = async (id) => {
