@@ -233,19 +233,19 @@ const adminService = {
   },
 
   // Get password reset requests (Admin)
-  getPasswordResetRequests: async (params = {}) => {
-    return await api.get('/admin/password-requests', { params });
-  },
+  // getPasswordResetRequests: async (params = {}) => {
+  //   return await api.get('/admin/password-requests', { params });
+  // },
 
   // Approve password reset request
-  approvePasswordReset: async (id, data) => {
-    return await api.post(`/admin/password-requests/${id}/approve`, data);
-  },
+  // approvePasswordReset: async (id, data) => {
+  //   return await api.post(`/admin/password-requests/${id}/approve`, data);
+  // },
 
   // Reject password reset request
-  rejectPasswordReset: async (id, data) => {
-    return await api.post(`/admin/password-requests/${id}/reject`, data);
-  },
+  // rejectPasswordReset: async (id, data) => {
+  //   return await api.post(`/admin/password-requests/${id}/reject`, data);
+  // },
 };
 
 /**
