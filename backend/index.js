@@ -25,7 +25,8 @@ app.use(cors({
     const allowedOrigins = [
       process.env.FRONTEND_URL,
       'http://localhost:3000',
-      'http://localhost:3001'
+      'http://localhost:3001',
+      'https://dassa1-gmgszhk5m-navey15s-projects.vercel.app' // Hardcoded backup for safety
     ].filter(Boolean);
 
     // console.log('Allowed Origins:', allowedOrigins); // Debugging
