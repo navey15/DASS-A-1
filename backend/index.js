@@ -28,9 +28,11 @@ app.use(cors({
       'http://localhost:3001'
     ].filter(Boolean);
 
+    // console.log('Allowed Origins:', allowedOrigins); // Debugging
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
+      console.error(`Blocked by CORS: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
