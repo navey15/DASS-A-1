@@ -221,7 +221,7 @@ const Register = () => {
 
           <div className="form-group" style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
             <ReCAPTCHA
-                sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+                sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || "6LcclHUsAAAAAA5-ACmZUyIHZkaYWcf-ovpl_H1Q"}
                 onChange={handleCaptchaChange}
             />
           </div>
