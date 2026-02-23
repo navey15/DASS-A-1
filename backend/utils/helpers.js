@@ -12,6 +12,7 @@ const verifyCaptcha = async (token) => {
   // If not provided (during dev), we might want to skip IF env is development.
   // But requirement says "Implement CAPTCHA verification".
   
+  // Use environment variable for secret key, fallback to test key ONLY if not provided
   const secretKey = process.env.RECAPTCHA_SECRET_KEY || '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
   
   try {
