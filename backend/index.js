@@ -25,10 +25,14 @@ app.use(cors({
     const allowedOrigins = [
       process.env.FRONTEND_URL,
       'http://localhost:3000',
-      'http://localhost:3001',
-      'https://dassa1-gmgszhk5m-navey15s-projects.vercel.app' // Hardcoded backup for safety
+      'http://localhost:3001'
     ].filter(Boolean);
 
+    // Allow all vercel.app domains (for previews and production)
+    if (origin && origin.endsWith('.vercel.app')) {
+       return callback(null, true);
+    }
+    
     // console.log('Allowed Origins:', allowedOrigins); // Debugging
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
@@ -122,11 +126,6 @@ app.use('/api/chat', chatRoutes);
 // Base route
 app.get('/', (req, res) => {
   res.send('Felicity EMS API is running');
-});
-
-// API Base route (to prevent 404 on /api)
-app.get('/api', (req, res) => {
-  res.json({ message: 'Welcome to Felicity EMS API' });
 });
 
 // Error Handling Middleware
