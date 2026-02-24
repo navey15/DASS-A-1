@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { adminService } from '../../services';
 
 const AdminDashboard = () => {
+  const [stats, setStats] = useState({
+    users: { totalParticipants: 0 },
+    events: { totalEvents: 0 },
+    registrations: { totalRegistrations: 0 }
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await adminService.getStatistics();
+        if (response.success) {
+          setStats(response.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
@@ -30,9 +55,15 @@ const AdminDashboard = () => {
 
         <div className="dashboard-card">
           <h3>System Stats</h3>
-          <p>Total Users: 0</p>
-          <p>Total Events: 0</p>
-          <p>Total Registrations: 0</p>
+          {loading ? (
+             <p>Loading...</p>
+          ) : (
+            <>
+              <p>Total Users: {stats.users?.totalParticipants || 0}</p>
+              <p>Total Events: {stats.events?.totalEvents || 0}</p>
+              <p>Total Registrations: {stats.registrations?.totalRegistrations || 0}</p>
+            </>
+          )}
         </div>
       </div>
 
@@ -43,7 +74,7 @@ const AdminDashboard = () => {
 
       <div className="dashboard-section">
         <h2>Pending Actions</h2>
-        <p>Items requiring admin attention</p>
+        <p>Items requiring admin attention</p> 
       </div>
     </div>
   );
