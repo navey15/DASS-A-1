@@ -1,56 +1,120 @@
-# Deployment Guide
+FELICITY EVENT MANAGEMENT SYSTEM - DEPLOYMENT GUIDE
+===================================================
 
-This guide will help you deploy the Felicity EMS backend to Render and the frontend to Vercel.
+This guide covers deploying the specific Felicity EMS stack:
+- Backend: Node.js/Express on Render
+- Frontend: React on Vercel
+- Database: MongoDB Atlas
 
-## Prerequisites
+## PREREQUISITES
 
-- [Render Account](https://render.com/)
-- [Vercel Account](https://vercel.com/)
-- [MongoDB Database](https://www.mongodb.com/atlas/database) (e.g., MongoDB Atlas)
-
----
-
-## 1. Backend Deployment (Render)
-
-1.  **Create a New Web Service** on Render.
-2.  Connect your GitHub repository.
-3.  **Root Directory:** `backend` (Important: This tells Render to look in the backend folder).
-4.  **Runtime:** Node
-5.  **Build Command:** `npm install`
-6.  **Start Command:** `npm start`
-7.  **Environment Variables:** Add the following key-value pairs in the "Environment" tab:
-    *   `NODE_ENV`: `production`
-    *   `MONGO_URI`: `your_mongodb_connection_string`
-    *   `JWT_SECRET`: `your_secure_jwt_secret`
-    *   `FRONTEND_URL`: `https://your-vercel-frontend-url.vercel.app` (You will set this *after* deploying frontend, for now you can put a placeholder or `*` temporarily if needed for testing, but better to update it later).
-8.  **Deploy:** Click "Create Web Service".
-
-**Note on File Uploads:**
-Render's free tier uses an ephemeral filesystem. Files uploaded to `uploads/` (like images) will be lost when the server restarts. For persistent file storage, consider using AWS S3, Cloudinary, or Render's persistent disk feature (paid).
+1. Render Account (https://render.com/)
+2. Vercel Account (https://vercel.com/)
+3. MongoDB Atlas Account (https://www.mongodb.com/cloud/atlas)
+4. GitHub Repository with the project code.
 
 ---
 
-## 2. Frontend Deployment (Vercel)
+## PART 1: DATABASE SETUP (MongoDB Atlas)
 
-1.  **Create a New Project** on Vercel.
-2.  Import your GitHub repository.
-3.  **Root Directory:** Edit the root directory settings and select `frontend`.
-4.  **Framework Preset:** Create React App (should be detected automatically).
-5.  **Build Command:** `npm run build` (default).
-6.  **Output Directory:** `build` (default).
-7.  **Environment Variables:** Add the following:
-    *   `REACT_APP_API_URL`: `https://your-render-backend-service.onrender.com` (Use the URL from step 1).
-8.  **Deploy:** Click "Deploy".
+1. Create a Cluster:
+   - Log in to MongoDB Atlas and create a free tier cluster.
+
+2. Configure Network Access:
+   - Go to "Network Access" in the sidebar.
+   - Click "Add IP Address".
+   - Select "Allow Access from Anywhere" (0.0.0.0/0). This is required for Render to connect.
+
+3. Create Database User:
+   - Go to "Database Access".
+   - Create a new user (e.g., `felicity_admin`).
+   - Generate a strong password and save it.
+
+4. Get Connection String:
+   - Click "Connect" on your cluster.
+   - Choose "Drivers" (Node.js).
+   - Copy the connection string. It looks like:
+     `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority`
+   - Replace `<password>` with your actual password.
 
 ---
 
-## 3. Final Configuration
+## PART 2: BACKEND DEPLOYMENT (Render)
 
-1.  Once the frontend is deployed and you have the Vercel URL (e.g., `https://my-app.vercel.app`), go back to your **Render Dashboard**.
-2.  Update the `FRONTEND_URL` environment variable to match your *exact* Vercel URL (no trailing slash).
-3.  Ensure your **MongoDB** network access allows connections from anywhere (`0.0.0.0/0`) or specifically from Render IPs (though Render IPs change, so `0.0.0.0/0` with strong password is easier).
+1. Create Web Service:
+   - Go to Render Dashboard -> New -> Web Service.
+   - Connect your GitHub repository.
 
-## Troubleshooting
+2. Configure Service:
+   - Name: `felicity-backend` (or similar)
+   - Root Directory: `backend` (CRITICAL STEP)
+   - Runtime: Node
+   - Build Command: `npm install`
+   - Start Command: `npm start`
 
-- **CORS Errors:** Check backend logs. Ensure `FRONTEND_URL` matches exactly (http vs https).
-- **404 on Refresh:** If refreshing a page gives a 404, ensure the `vercel.json` file is present in the `frontend` root. It handles client-side routing.
+3. Environment Variables (Advanced):
+   - Add the following keys:
+     - NODE_ENV: production
+     - MONGO_URI: (Paste your Atlas connection string from Part 1)
+     - JWT_SECRET: (A long, random string for security)
+     - RECAPTCHA_SECRET_KEY: (Your Google reCAPTCHA Secret Key)
+     - FRONTEND_URL: (Leave temporary or put `*` for now, update after Vercel deploy)
+
+4. Deploy:
+   - Click "Create Web Service".
+   - Wait for the build to finish.
+   - Copy the URL provided by Render (e.g., `https://felicity-backend.onrender.com`).
+
+   *Note: Render free tier spins down after inactivity. The first request might take 30-50 seconds.*
+
+---
+
+## PART 3: FRONTEND DEPLOYMENT (Vercel)
+
+1. Create Project:
+   - Go to Vercel Dashboard -> Add New -> Project.
+   - Import your GitHub repository.
+
+2. Configure Project:
+   - Framework Preset: Create React App (should auto-detect).
+   - Root Directory: Edit and select `frontend`.
+
+3. Environment Variables:
+   - Add the following keys:
+     - REACT_APP_API_URL: (The Render Backend URL from Part 2, e.g., https://felicity-backend.onrender.com/api)
+     - REACT_APP_RECAPTCHA_SITE_KEY: (Your Google reCAPTCHA Site Key)
+
+4. Deploy:
+   - Click "Deploy".
+   - Vercel will build and assign a domain (e.g., `https://felicity-frontend.vercel.app`).
+
+---
+
+## PART 4: FINAL CONFIGURATION
+
+1. Update Backend CORS:
+   - Go back to Render Dashboard -> Environment.
+   - Update `FRONTEND_URL` to your new Vercel URL (Remove trailing slash, e.g., `https://felicity-frontend.vercel.app`).
+   - Redeploy/Restart the backend service if needed (Render usually auto-deploys on env change).
+
+2. Verify:
+   - Open your Vercel URL.
+   - Try to Register/Login.
+   - If you see Network Errors, check the Browser Console (F12) to ensure the API URL is correct.
+
+---
+
+## TROUBLESHOOTING
+
+- 404 Errors on Refresh:
+  - Ensure `vercel.json` exists in `frontend/` with rewrite rules (already included in project).
+
+- CORS Errors:
+  - Check that `FRONTEND_URL` in Render matches the Vercel URL exactly (https vs http, no trailing slash).
+
+- Image Uploads Disappear:
+  - Render's ephemeral file system deletes local files on restart.
+  - This project uses local storage (`uploads/`). For production persistence, integration with Cloudinary or AWS S3 is recommended.
+
+- "Connection Refused" to Database:
+  - Ensure MongoDB Atlas Network Access is set to `0.0.0.0/0`.
