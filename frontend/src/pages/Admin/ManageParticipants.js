@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { adminService } from '../../services';
-import moment from 'moment';
 
 const ManageParticipants = () => {
   const [participants, setParticipants] = useState([]);
@@ -90,7 +89,13 @@ const ManageParticipants = () => {
                     </span>
                   </td>
                   <td>{participant.collegeName || 'N/A'}</td>
-                  <td>{moment(participant.createdAt).format('MMM D, YYYY')}</td>
+                  <td>
+                    {new Date(participant.createdAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </td>
                 </tr>
               ))
             ) : (
