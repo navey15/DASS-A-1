@@ -1,8 +1,8 @@
 FELICITY EVENT MANAGEMENT SYSTEM - DEPLOYMENT INFO
 ==================================================
 
-Frontend URL: <INSERT_VERCEL_URL_HERE>
-Backend URL: <INSERT_RENDER_URL_HERE>
+Frontend URL: https://dass-a-1-cniz-iyq72x34w-navey15s-projects.vercel.app
+Backend URL: https://dass-a-1.onrender.com
 
 --------------------------------------------------
 
