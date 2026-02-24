@@ -1,6 +1,13 @@
-FELICITY EVENT MANAGEMENT SYSTEM - DEPLOYMENT GUIDE
-===================================================
+FELICITY EVENT MANAGEMENT SYSTEM - DEPLOYMENT INFO
+==================================================
 
+Frontend URL: <INSERT_VERCEL_URL_HERE>
+Backend URL: <INSERT_RENDER_URL_HERE>
+
+--------------------------------------------------
+
+DEPLOYMENT GUIDE
+================
 This guide covers deploying the specific Felicity EMS stack:
 - Backend: Node.js/Express on Render
 - Frontend: React on Vercel

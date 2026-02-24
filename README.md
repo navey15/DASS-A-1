@@ -1,55 +1,139 @@
 # Felicity Event Management System
+## Design & Analysis of Software Systems - Assignment 1
 
-A comprehensive MERN stack application for managing events, registrations, and participant interactions.
+A comprehensive MERN stack application for managing university fest events, registrations, and participant interactions.
 
-## 📂 Project Structure
+---
 
-```
-|-- backend/          # Node.js + Express Server
-|-- frontend/         # React Application
-|-- README.md         # Project Documentation
-|-- deployment.txt    # Deployment Instructions
-```
+## 🛠 Technology Stack & Libraries
 
-## 🚀 Quick Start (Local Development)
+### **Backend (Node.js + Express + MongoDB)**
+| Library | Purpose & Justification |
+| :--- | :--- |
+| **Express.js** | Minimalist web framework for building robust REST APIs. Chosen for its middleware ecosystem (Auth, Validation). |
+| **MongoDB (Mongoose)** | NoSQL database. Chosen for its flexible schema design, essential for handling diverse event types (Workshops, Hackathons, Merchandise) and dynamic registration forms. |
+| **tesseract.js** | OCR library. Used for analyzing text from uploaded images. |
+| **bcryptjs** | Password hashing. Essential security requirement to never store plaintext passwords. |
+| **jsonwebtoken** | Stateless authentication. Enables secure API access without server-side session storage. |
+| **multer** | Middleware for `multipart/form-data`. Crucial for handling image uploads (Payment Proofs, Chat files, Profile pictures) securely. |
+| **socket.io** | Real-time bidirectional communication. Used to implement the **Team Chat** feature. |
+| **nodemailer** | Email service. Used for sending registration confirmations and reset tokens. |
+| **axios** | Promise-based HTTP client. Used for verifying ReCAPTCHA tokens with Google servers. |
+| **cors** | Cross-Origin Resource Sharing. Enables the frontend (Vercel) to communicate with the backend (Render). |
+| **qrcode** | QR Code generation. Used to generate unique check-in codes for confirmed participants. |
+
+### **Frontend (React)**
+| Library | Purpose & Justification |
+| :--- | :--- |
+| **React** | Component-based UI library. Facilitates reusability (Cards, Forms, Navbars) and efficient state management. |
+| **react-router-dom** | Declarative routing. Handles protected routes (Admin/Organizer only) and navigation. |
+| **axios** | HTTP client. Simplifies API requests and interceptors for attaching JWT tokens automatically. |
+| **socket.io-client** | Client-side library for connecting to the real-time chat server. |
+| **react-google-recaptcha** | Component wrapper for Google ReCAPTCHA v2. simplfies integration for Bot Protection. |
+| **chart.js / react-chartjs-2** | Data visualization. Used in Organizer Analytics to display registration trends and revenue. |
+| **bootstrap / react-bootstrap** | CSS Framework. Accelerates UI development with responsive grid and pre-built components. |
+| **moment** | Date manipulation. Used for formatting event dates and countdowns. |
+
+---
+
+## 🚀 Implemented Advanced Features
+
+### **Tier A: Core Advanced Features**
+
+#### **1. Hackathon Team Registration**
+*   **Description**: Enables participants to form teams, invite members via code, and register as a group.
+*   **Design Choices**: Adopted a "Leader-Centric" model where the creator becomes the team leader. Invite codes were chosen over email invites for simplicity and to prevent spam.
+*   **Technical Decisions**: 
+    *   Implemented atomic checks in `registrationController`: A team is only "Confirmed" when all members join AND constraints (size min/max) are met.
+    *   Used MongoDB nested schemas (`team.teamMembers`) to keep team data localized to the registration document.
+
+#### **2. Merchandise Payment Approval Workflow**
+*   **Description**: A manual verification system where users upload payment screenshots, and Organizers approve/reject them.
+*   **Design Choices**: Decided against a payment gateway to simulate real-world "college fest" scenarios where UPI/Cash is common. Users upload proof, status becomes `Pending`.
+*   **Technical Decisions**: 
+    *   Used `multer` to store proof images with unique timestamps.
+    *   State Machine approach: `Pending` -> `Approved` (Decrements Stock, Generates QR) OR `Rejected` (Resets status, notifies user).
+
+### **Tier B: Real-Time & Communication**
+
+#### **1. Organizer Password Reset Workflow**
+*   **Description**: Organizers cannot reset their own passwords; they must request a reset from the Admin.
+*   **Design Choices**: Centralized security model. Organizers are high-privilege accounts; allowing self-service resets increases takeover risk. Admin acts as the gatekeeper.
+*   **Technical Decisions**:
+    *   Created `PasswordResetRequest` model to track request status (`Pending`, `Approved`, `Rejected`).
+    *   Admin dashboard fetches pending requests; approval triggers a secure random password generation sent via email or displayed to Admin.
+
+#### **2. Team Chat**
+*   **Description**: Real-time chat room for confirmed hackathon team members.
+*   **Design Choices**: Chat is scoped strictly to the `TeamID`. Only accepted members can join the socket room.
+*   **Technical Decisions**:
+    *   **Socket.io Namespaces/Rooms**: Each team joins a unique room `team_<teamId>`.
+    *   **Persistence**: Messages are stored in MongoDB (`Message` model) so history is available upon page reload.
+    *   **Typing Indicators**: Broadcasted `typing` events to room members for better UX.
+
+### **Tier C: Integration & Enhancements**
+
+#### **1. Bot Protection (Google ReCAPTCHA)**
+*   **Description**: Integration of Google ReCAPTCHA v2 on Login and Registration forms.
+*   **Design Choices**: Selected "Checkbox" (v2) over invisible (v3) to provide clear user feedback during high-traffic registration periods.
+*   **Technical Decisions**:
+    *   **Dual Validation**: Frontend ensures the checkbox is clicked before submit. Backend (`middleware/verifyCaptcha`) verifies the token with Google API before processing the request.
+
+*(Note: Anonymous Feedback System is also implemented for extra credit).*
+
+---
+
+## 💻 Setup & Installation (Local Development)
 
 ### Prerequisites
 - Node.js (v14+)
-- MongoDB (Local or Atlas)
+- MongoDB (Local or Atlas Connection String)
 
-### 1. Setup Backend
+### 1. Backend Setup
 ```bash
 cd backend
 npm install
-# Create .env file based on .env.example
-npm run seed  # (Optional) Seeds database with sample data
-npm start     # Starts server on http://localhost:5000
+
+# Create .env file with the following:
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/felicity
+JWT_SECRET=your_super_secret_key
+RECAPTCHA_SECRET_KEY=your_google_secret_key
+FRONTEND_URL=http://localhost:3000
+
+# Seed Database (Optional - creates Admin & Sample Data)
+npm run seed
+
+# Start Server
+npm start
 ```
 
-### 2. Setup Frontend
+### 2. Frontend Setup
 ```bash
 cd frontend
 npm install
-# Create .env file based on .env.example
-npm start     # Starts client on http://localhost:3000
+
+# Create .env file:
+REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_RECAPTCHA_SITE_KEY=your_google_site_key
+
+# Start Application
+npm start
 ```
 
-## 🧪 Testing Guide
+The application will launch at `http://localhost:3000`.
 
-This project is tested both locally and on deployed environments.
+### 3. Default Credentials (from Seed)
+*   **Admin**: `admin@felicity.com` / `Admin@123456`
+*   **Organizer**: `music_club@felicity.com` / `Music@123`
+*   **Participant**: `monica@example.com` / `Password@123`
 
-### Core Features to Test
-1.  **Authentication**: Login/Register (Participant, Organizer, Admin).
-2.  **Event Management**: Create/Edit events as Organizer.
-3.  **Registration**: Register for events as Participant (Individual & Team).
-4.  **Admin Panel**: Approve Organizers, Reset Passwords.
-
-### Test Accounts (If seeded)
-- **Admin**: `admin@felicity.com` / `Admin@123456`
+---
 
 ## 🌍 Deployment
 
 See `deployment.txt` for detailed instructions on deploying to Render (Backend) and Vercel (Frontend).
+
 
 cd <project-root>
 ```
