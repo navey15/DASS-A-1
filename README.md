@@ -1,53 +1,56 @@
 # Felicity Event Management System
 
-A comprehensive MERN stack application for managing events, registrations, and participant interactions for Felicity - the annual fest at Haldia Institute of Technology.
+A comprehensive MERN stack application for managing events, registrations, and participant interactions.
 
-## 📋 Project Overview
+## 📂 Project Structure
 
-This system handles:
-- **Participant Management**: Registration, event browsing, registrations, feedback
-- **Organizer Features**: Event creation, participant management, analytics, payment approval
-- **Admin Features**: Organizer management, system oversight, password reset approvals
-- **Real-time Discussion Forums**: Event-based communication
-- **Team Registrations**: Hackathon and team-based event support
-- **Merchandise Management**: T-shirt sales and stock management
-
-## 🏗️ Architecture
-
-### Backend (Node.js + Express + MongoDB)
 ```
-backend/
-├── config/          # Database configuration
-├── controllers/     # Business logic
-├── middleware/      # Authentication, validation, error handling
-├── models/          # MongoDB schemas
-├── routes/          # API endpoints
-├── utils/           # Helper functions
-├── index.js         # Server entry point
-└── seed.js          # Database seeding script
+|-- backend/          # Node.js + Express Server
+|-- frontend/         # React Application
+|-- README.md         # Project Documentation
+|-- deployment.txt    # Deployment Instructions
 ```
 
-### Frontend (React)
-```
-frontend/
-├── components/      # Reusable UI components
-├── context/         # React Context (Auth, Theme)
-├── pages/           # Page components
-├── services/        # API service layer
-└── src/             # Main React app files
-```
-
-## 🚀 Getting Started
+## 🚀 Quick Start (Local Development)
 
 ### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB (v4.4 or higher)
-- npm or yarn
+- Node.js (v14+)
+- MongoDB (Local or Atlas)
 
-### Installation
-
-#### 1. Clone the repository
+### 1. Setup Backend
 ```bash
+cd backend
+npm install
+# Create .env file based on .env.example
+npm run seed  # (Optional) Seeds database with sample data
+npm start     # Starts server on http://localhost:5000
+```
+
+### 2. Setup Frontend
+```bash
+cd frontend
+npm install
+# Create .env file based on .env.example
+npm start     # Starts client on http://localhost:3000
+```
+
+## 🧪 Testing Guide
+
+This project is tested both locally and on deployed environments.
+
+### Core Features to Test
+1.  **Authentication**: Login/Register (Participant, Organizer, Admin).
+2.  **Event Management**: Create/Edit events as Organizer.
+3.  **Registration**: Register for events as Participant (Individual & Team).
+4.  **Admin Panel**: Approve Organizers, Reset Passwords.
+
+### Test Accounts (If seeded)
+- **Admin**: `admin@felicity.com` / `Admin@123456`
+
+## 🌍 Deployment
+
+See `deployment.txt` for detailed instructions on deploying to Render (Backend) and Vercel (Frontend).
+
 cd <project-root>
 ```
 
