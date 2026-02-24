@@ -97,7 +97,7 @@ const PaymentApprovals = () => {
                    <div style={{marginBottom: "1rem"}}>
                       <p style={{fontSize: "0.8rem", fontWeight: "bold", marginBottom: "0.5rem"}}>Payment Proof:</p>
                       <a 
-                        href={`http://localhost:5000/${reg.payment.proofImage}`} 
+                        href={`${process.env.REACT_APP_API_URL?.replace('/api', '')}/${reg.payment.proofImage}`} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="btn btn-secondary btn-sm"
