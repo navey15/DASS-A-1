@@ -42,7 +42,8 @@ const PasswordRequests = () => {
     
     try {
       setActionLoading(true);
-      const response = await adminService.approvePasswordReset(id, { adminComments: 'Approved by admin' });
+      // Pass the comment string directly, not as an object
+      const response = await adminService.approvePasswordReset(id, 'Approved by admin');
       
       if (response.success) {
         setSuccessMessage(`Success! New Password for Organizer: "${response.data.newPassword}" (Copy only the text inside quotes)`);
