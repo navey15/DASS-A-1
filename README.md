@@ -79,7 +79,7 @@ A comprehensive MERN stack application for managing university fest events, regi
 *   **Technical Decisions**:
     *   **Dual Validation**: Frontend ensures the checkbox is clicked before submit. Backend (`middleware/verifyCaptcha`) verifies the token with Google API before processing the request.
 
-*(Note: Anonymous Feedback System is also implemented for extra credit).*
+
 
 ---
 
@@ -177,14 +177,6 @@ npm start
 
 > Organizers are no longer pre-seeded. Sign in as admin and create organizer accounts from the dashboard.
 
-### Participants
-1. **John Doe (IIITH Student)**
-   - Email: john.doe@iiith.edu
-   - Password: John@123456
-
-2. **Jane Smith (External)**
-   - Email: jane.smith@gmail.com
-   - Password: Jane@123456
 
 ## 📚 API Documentation
 
@@ -242,35 +234,35 @@ http://localhost:5000/api
 ## 🎨 Features by Role
 
 ### Participant
-- ✅ Browse and search events
-- ✅ Filter by type, eligibility, date
-- ✅ Register for events
-- ✅ Team registration for hackathons
-- ✅ View registration history
-- ✅ Submit feedback after events
-- ✅ Follow clubs/organizers
-- ✅ Participate in discussions
-- ✅ Get personalized recommendations
+-  Browse and search events
+-  Filter by type, eligibility, date
+-  Register for events
+-  Team registration for hackathons
+-  View registration history
+-  Submit feedback after events
+-  Follow clubs/organizers
+-  Participate in discussions
+-  Get personalized recommendations
 
 ### Organizer
-- ✅ Create and manage events
-- ✅ Draft/Publish workflow
-- ✅ Custom registration forms
-- ✅ Merchandise event management
-- ✅ View participant lists
-- ✅ Mark attendance
-- ✅ Approve/reject payments
-- ✅ View analytics and statistics
-- ✅ Export registration data
-- ✅ Manage discussions
+-  Create and manage events
+-  Draft/Publish workflow
+-  Custom registration forms
+-  Merchandise event management
+-  View participant lists
+-  Mark attendance
+-  Approve/reject payments
+-  View analytics and statistics
+-  Export registration data
+-  Manage discussions
 
 ### Admin
-- ✅ Create organizer accounts
-- ✅ Manage organizers
-- ✅ View system statistics
-- ✅ Approve password reset requests
-- ✅ View all participants
-- ✅ Monitor all events
+-  Create organizer accounts
+-  Manage organizers
+-  View system statistics
+-  Approve password reset requests
+-  View all participants
+-  Monitor all events
 
 ## 🔐 Security Features
 
@@ -310,10 +302,7 @@ http://localhost:5000/api
 - Pin functionality
 - Organizer announcements
 
-### Feedback
-- 1-5 star rating
-- Anonymous option
-- Post-event only
+
 
 ## 🛠️ Development
 
@@ -367,26 +356,3 @@ REACT_APP_API_URL=http://localhost:5000/api
 2. Set REACT_APP_API_URL to production backend URL
 3. Deploy build folder
 
-## 🤝 Contributing
-
-1. Follow the existing code structure
-2. Write clean, documented code
-3. Test thoroughly before committing
-4. Follow naming conventions
-5. Keep components modular and reusable
-
-## 📄 License
-
-This project is developed for Felicity - IIITH's annual fest.
-
-## 👥 Team
-
-Developed by the Felicity Tech Team
-
-## 📞 Support
-
-For issues or questions, contact the development team.
-
----
-
-**Happy Coding! 🎉**
